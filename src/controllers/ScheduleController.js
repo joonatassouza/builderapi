@@ -13,26 +13,21 @@ module.exports = {
     return res.json(schedule);
   },
 
-  async add(req, res) {
-    const { name, phone, birthdate } = req.body;
+  async save(req, res) {
+    const { _id, name, phone, birthdate } = req.body;
 
-    const schedule = await Schedule.create({
-      name,
-      phone,
-      birthdate
-    });
+    let schedule = await Schedule.findById(_id);
 
-    return res.json(schedule);
-  },
-
-  async update(req, res) {
-    const { name, phone, birthdate } = req.body;
-
-    const schedule = await Schedule.findById(req.params.id);
-
-    schedule = { ...schedule, name, phone, birthdate };
-
-    await schedule.save();
+    if (!schedule) {
+      schedule = await Schedule.create({
+        name,
+        phone,
+        birthdate
+      });
+    } else {
+      schedule = { ...schedule, name, phone, birthdate };
+      await schedule.save();
+    }
 
     return res.json(schedule);
   },
