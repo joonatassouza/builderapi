@@ -7,6 +7,12 @@ module.exports = {
     return res.json(list);
   },
 
+  async getById(req, res) {
+    const schedule = await Schedule.findById(req.params.id);
+
+    return res.json(schedule);
+  },
+
   async add(req, res) {
     const { name, phone, birthdate } = req.body;
 
