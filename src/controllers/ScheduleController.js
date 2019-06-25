@@ -1,8 +1,8 @@
-const Schedule = require("../models/Schedule");
+const Schedule = require('../models/Schedule');
 
 module.exports = {
   async getAll(req, res) {
-    const list = await Schedule.find().sort("name");
+    const list = await Schedule.find().sort('name');
 
     return res.json(list);
   },
@@ -14,7 +14,13 @@ module.exports = {
   },
 
   async save(req, res) {
-    const { _id, name, phone, birthdate } = req.body;
+    const { values } = req.body;
+
+    const _id = (values.find(f => f.fieldName === '_id') || {}).value;
+    const name = (values.find(f => f.fieldName === 'name') || {}).value;
+    const phone = (values.find(f => f.fieldName === 'phone') || {}).value;
+    const birthdate = (values.find(f => f.fieldName === 'birthdate') || {})
+      .value;
 
     let schedule = await Schedule.findById(_id);
 
